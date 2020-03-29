@@ -1,0 +1,90 @@
+{
+	"info": {
+		"_postman_id": "0d6433e9-b9d1-4272-bcc8-adca9c15909b",
+		"name": "Belgian Mobility",
+		"description": "This collection tests Belgian Mobility api's\n\n# basic test\nAll api's respond\n\n#functional tests\nresponses are not empty and meaningfull",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Punctuality of Belgian railway operator",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "8add4b2c-ea72-466a-9cf2-42b88599dcfb",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"",
+							"pm.test(\"Succesfull get status 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"})",
+							"",
+							"pm.test(\"At least one record returned\", function () {",
+							"    pm.expect(jsonData.nhits).not.to.equal(0);",
+							"})",
+							"",
+							"pm.test(\"Returned data from  {{operator}} only\", function () {",
+							"    var operator  = pm.iterationData.get(\"operator\");",
+							"    for(var i =0 ; i<jsonData.records.length ; i++ )",
+							"    {",
+							"    console.log(operator);",
+							"    pm.expect(jsonData.records[i].fields.train_serv).to.equal(operator)}",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://infrabel.opendatasoft.com/api/records/1.0/search/?dataset=ruwe-gegevens-van-stiptheid-d-1&facet=train_no&facet=train_serv&refine.train_serv={{operator}}",
+					"protocol": "https",
+					"host": [
+						"infrabel",
+						"opendatasoft",
+						"com"
+					],
+					"path": [
+						"api",
+						"records",
+						"1.0",
+						"search",
+						""
+					],
+					"query": [
+						{
+							"key": "dataset",
+							"value": "ruwe-gegevens-van-stiptheid-d-1"
+						},
+						{
+							"key": "facet",
+							"value": "train_no"
+						},
+						{
+							"key": "facet",
+							"value": "train_serv"
+						},
+						{
+							"key": "refine.train_serv",
+							"value": "{{operator}}"
+						}
+					]
+				},
+				"description": "Get Punctuality of Belgian railway operator\n\nList of operator to be given by testfile"
+			},
+			"response": []
+		}
+	],
+	"variable": [
+		{
+			"id": "77b95049-7940-4fc1-b5fe-795472e1b7d4",
+			"key": "assert",
+			"value": "",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
