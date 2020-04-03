@@ -76,11 +76,137 @@
 				"description": "Get Punctuality of Belgian railway operator\n\nList of operator to be given by testfile"
 			},
 			"response": []
+		},
+		{
+			"name": "Get available Vilo in Brussels",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "ad0b4845-72a5-4797-a423-5191f7a442d7",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"var contract  = \"bruxelles\";",
+							"",
+							"pm.test(\"Succesfull get status 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Returned data from  bruxelles contract only\", function () {",
+							"    jsonData.forEach(function(item) {",
+							"    pm.expect(item.contract_name).to.equal(contract)}",
+							")});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.jcdecaux.com/vls/v1/stations?apiKey=6d5071ed0d0b3b68462ad73df43fd9e5479b03d6&contract=Bruxelles-Capitale&_ga=2.198020457.770383242.1585472274-350613566.1585472274",
+					"protocol": "https",
+					"host": [
+						"api",
+						"jcdecaux",
+						"com"
+					],
+					"path": [
+						"vls",
+						"v1",
+						"stations"
+					],
+					"query": [
+						{
+							"key": "apiKey",
+							"value": "6d5071ed0d0b3b68462ad73df43fd9e5479b03d6"
+						},
+						{
+							"key": "contract",
+							"value": "Bruxelles-Capitale"
+						},
+						{
+							"key": "_ga",
+							"value": "2.198020457.770383242.1585472274-350613566.1585472274"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Carpoolparkings from Flanders",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a4965475-3c77-400c-9f3f-95fa94b112bd",
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);",
+							"const schema = {",
+							"    \"type\" : \"object\",",
+							"    \"properties\":{",
+							"        \"carpoolparkings\":{",
+							"            \"type\": \"array\",",
+							"            \"minItems\":1,",
+							"            \"maxItems\":5000,",
+							"            \"items\":{",
+							"                \"type\": \"object\",",
+							"                \"properties\":{",
+							"                    \"parking\" : {",
+							"                        \"type\": \"object\",",
+							"                        \"properties\": {",
+							"                        \"title\" : {\"type\": \"string\"},",
+							"                        \"field_carpool_parking_types\" : {\"type\": \"string\"},",
+							"                        \"field_gemeente\": {\"type\": \"string\"},",
+							"                        \"field_locatie\": {\"type\": \"string\"},",
+							"                        \"field_carpoolkaart\": {\"type\": \"string\"}",
+							"                        },",
+							"                     \"required\": [\"title\",\"field_carpool_parking_types\",\"field_gemeente\",\"field_locatie\",\"field_carpoolkaart\"]   ",
+							"                    }    ",
+							"                },",
+							"                \"required\": [\"parking\"]",
+							"                }",
+							"        }",
+							"    }",
+							"};",
+							"",
+							"pm.test(\"Succesfull get status 200 of carpoolparkings\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Response respects the carpoolparkings schema\", ()=>{",
+							"    pm.response.to.have.jsonSchema(schema);",
+							"});",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://wegenenverkeer.be/carpoolparkings/json",
+					"protocol": "https",
+					"host": [
+						"wegenenverkeer",
+						"be"
+					],
+					"path": [
+						"carpoolparkings",
+						"json"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"variable": [
 		{
-			"id": "77b95049-7940-4fc1-b5fe-795472e1b7d4",
+			"id": "fc2704ec-3ece-451a-9415-1c877441050e",
 			"key": "assert",
 			"value": "",
 			"type": "string"
