@@ -1,4 +1,4 @@
-# api testing of several open api initiatives from Belgiul
+# api testing of several open api initiatives from Belgium
 
 ## National Belgian railways punctuality
 
@@ -33,7 +33,7 @@ import "Belgian Mobility.postman_collection.json" collection file in Postman
 run the collection in the Collection runner
 upload test data file "rail_operators_testdata.csv" in the Collection runner
 
-# run as postman collection with test data
-import "Belgian Mobility.postman_collection.json" collection file in Postman
-run the collection in the Collection runner
+# run as newman collection with test data
+newman run "Belgian Mobility.postman_collection.json" -d rail_operators_testdata.csv -n 3
+
 
